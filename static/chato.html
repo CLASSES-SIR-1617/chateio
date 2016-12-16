@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="/jquery/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<style type="text/css">
+		#content {
+			height : 500px;
+			background-color: lightblue;
+		}
+		#messenger {
+			background-color: black;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+<div id="messenger">
+<form id="f1">
+	<input type="text" id="message" name="message"/>
+	<input type="submit"/>
+</form>
+</div>
+<div id="content">
+</div>
+</body>
+<script>
+	/*
+	document.getElementById("f1").onsubmit = function (e) {
+		newp = document.createElement("p");
+		newp.innerHTML = document.getElementById("message").value;
+		document.getElementById("content").appendChild(newp);
+		e.preventDefault();
+	}
+*/
+	var socket = io.connect();
+
+	socket.on("newchat", function (data) {
+		$("#content").prepend($("<p>").html(data));
+	})
+
+
+	$("#f1").submit(function (e) {
+		//$("#content").prepend($("<p>").html($("#message").val()));
+		socket.emit("chat",$("#message").val());
+		$("#message").val("");
+		e.preventDefault();
+
+	});
+
+
+
+
+
+</script>
+</html>
